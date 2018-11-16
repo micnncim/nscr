@@ -4,6 +4,9 @@
 
 ```sh
 $ nscr
+> 
+  dev    webpack-dev-server --inline
+  build  webpack --config prod.config.js
 ```
 
 ## Installation
