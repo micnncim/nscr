@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os/exec"
+	"strings"
 
 	finder "github.com/b4b4r07/go-finder"
 	"github.com/pkg/errors"
@@ -34,11 +35,14 @@ func main() {
 		log.Fatal(err)
 	}
 
-	s, err := selectScript(scripts)
+	script, err := selectScript(scripts)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(s)
+
+	if err := runScript(script); err != nil {
+		log.Fatal(err)
+	}
 }
 
 func parseScript() ([]Script, error) {
@@ -69,13 +73,28 @@ func selectScript(scripts []Script) (string, error) {
 		return "", err
 	}
 
-	selected, err := filter.Select(scripts)
+	lines := make([]string, 0, len(scripts))
+	for _, s := range scripts {
+		lines = append(lines, fmt.Sprintf("%s\t%s", s.Exec, s.Command))
+	}
+
+	selected, err := filter.Select(lines)
 	if err != nil {
 		return "", err
 	}
-	fmt.Println(selected)
+	if len(selected) == 0 {
+		return "", errors.Wrap(err, "must select 1 script")
+	}
+	if len(selected) > 1 {
+		return "", errors.Wrap(err, "cannot select >1 script")
+	}
 
-	return "", nil
+	s, ok := selected[0].(string)
+	if !ok {
+		return "", errors.Wrap(err, "")
+	}
+
+	return strings.Split(s, "\t")[0], nil
 }
 
 func runScript(script string) error {
