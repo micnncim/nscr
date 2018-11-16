@@ -1,4 +1,4 @@
-# nscr - Run npm scripts with interactive filter
+# nscr - CLI running npm scripts with interactive filter
 
 ## Usage
 
@@ -9,7 +9,7 @@ $ nscr
 ## Installation
 
 ```sh
-$ go get github.com/micnncim/nscr/cmd/nscr
+$ go get github.com/micnncim/nscr
 ```
 
 ## LICENSE
