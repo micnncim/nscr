@@ -26,7 +26,6 @@ $ go get github.com/micnncim/nscr
 
 ## Todo
 
-- [ ] Stream output of scripts
 - [ ] Highlighting for output of scripts
 
 ## LICENSE
