@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -98,20 +99,39 @@ func selectScript(scripts []Script) (string, error) {
 }
 
 func runScript(script string) error {
-	var cmd string
+	var command string
 	if _, err := exec.LookPath("yarn"); err == nil {
-		cmd = "yarn"
+		command = "yarn"
 	} else if exec.LookPath("npm"); err == nil {
-		cmd = "npm"
+		command = "npm"
 	} else {
 		return errors.Wrap(err, "cannot find yarn or npm. need to install one of them")
 	}
 
-	bytes, err := exec.Command(cmd, script).Output()
+	cmd := exec.Command(command, script)
+	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		return err
 	}
-	fmt.Println(string(bytes))
+	stderr, err := cmd.StderrPipe()
+	if err != nil {
+		return err
+	}
+	cmd.Start()
+
+	go func() {
+		scanner := bufio.NewScanner(stdout)
+		for scanner.Scan() {
+			fmt.Println(scanner.Text())
+		}
+	}()
+	go func() {
+		scanner := bufio.NewScanner(stderr)
+		for scanner.Scan() {
+			fmt.Println(scanner.Text())
+		}
+	}()
+	cmd.Wait()
 
 	return nil
 }
