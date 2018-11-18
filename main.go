@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
+	"os"
 	"os/exec"
 	"strings"
 
@@ -33,16 +33,23 @@ type (
 func main() {
 	scripts, err := parseScript()
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println("failed to parse npm scripts")
+		os.Exit(1)
+	}
+	if len(scripts) == 0 {
+		fmt.Println("package.json has no npm scripts")
+		os.Exit(1)
 	}
 
 	script, err := selectScript(scripts)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println("failed to select npm script")
+		os.Exit(1)
 	}
 
 	if err := runScript(script); err != nil {
-		log.Fatal(err)
+		fmt.Println("failed to run npm script")
+		os.Exit(1)
 	}
 }
 
