@@ -24,6 +24,10 @@ $ nscr
 $ go get github.com/micnncim/nscr
 ```
 
+## Note
+
+Maybe `npm run` or `yarn run` are more useful...😢 
+
 ## LICENSE
 
 [MIT](./LICENSE)
