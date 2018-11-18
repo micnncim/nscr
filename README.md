@@ -24,10 +24,6 @@ $ nscr
 $ go get github.com/micnncim/nscr
 ```
 
-## Todo
-
-- [ ] Highlighting for output of scripts
-
 ## LICENSE
 
 [MIT](./LICENSE)
