@@ -26,7 +26,7 @@ $ go get github.com/micnncim/nscr
 
 ## Note
 
-Maybe `npm run` or `yarn run` are more useful...😢 
+Maybe `npm run` or `yarn run` are more useful...😢
 
 ## LICENSE
 
